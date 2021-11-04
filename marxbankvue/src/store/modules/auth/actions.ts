@@ -16,10 +16,10 @@ export const actions: ActionTree<AuthState, RootState> = {
    * @param token before logout
    */
   async logout({ commit }, token: object | null) {
-    console.log(token);
     await axios.post(BASE_URL + "/logout", token).then(() => {
       commit("setStatus", "");
       commit("setToken", null);
+      localStorage.removeItem('token')
       delete axios.defaults.headers.common["Authorization"];
     });
   },
@@ -39,11 +39,13 @@ export const actions: ActionTree<AuthState, RootState> = {
         const userId = response.data.userResponse.id;
         const token = response.data.token;
         axios.defaults.headers.common["Authorization"] = token;
+        localStorage.setItem('token', token)
         commit("setUserId", userId);
         commit("setStatus", "success");
         commit("setToken", token);
       })
       .catch((err) => {
+        localStorage.removeItem('token')
         commit("setStatus", "error", err);
       });
   },
@@ -64,11 +66,13 @@ export const actions: ActionTree<AuthState, RootState> = {
         const userId = response.data.userResponse.id;
         const token = response.data.token;
         axios.defaults.headers.common["Authorization"] = token;
+        localStorage.setItem('token', token)
         commit("setUserId", userId);
         commit("setStatus", "success");
         commit("setToken", token);
       })
       .catch((err) => {
+        localStorage.removeItem('token')
         commit("setStatus", "error", err);
       });
   },
