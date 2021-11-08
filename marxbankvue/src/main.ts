@@ -11,7 +11,8 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 
 const token = localStorage.getItem('token');
 if( token ){
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+    axios.defaults.headers.common['Authorization'] = token;
+    store.commit("setToken", token)
 }
 
 library.add(fas);
